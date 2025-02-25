@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Page</title>
+</head>
+<body>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header text-center fs-4"> Register Page</div>
+
+                    <!-- Display session message if present -->
+                    <th:block th:if="${msg}">
+                        <p class="text-center fs-3 text-success">[[${msg}]]</p>
+                    </th:block>
+
+                    <div class="card-body">
+                        <form th:action="@{/createUser}" th:object="${user}" method="post">
+                            <div class="mb-3">
+                                <label>Full Name</label>
+                                <input type="text" th:field="*{fullName}" class="form-control" required />
+                                <small class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Email</label>
+                                <input type="email" th:field="*{email}" class="form-control" required />
+                                <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Password</label>
+                                <input type="password" th:field="*{password}" class="form-control" required />
+                                <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Age</label>
+                                <input type="number" th:field="*{age}" class="form-control" required />
+                                <small class="text-danger" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Date of Birth</label>
+                                <input type="date" th:field="*{dob}" class="form-control" required />
+                                <small class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="text" id="phone" th:field="*{phone}" class="form-control" />
+                                <small class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" id="address" th:field="*{address}" class="form-control" />
+                                <small class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
+                            </div>
+
+                            <!-- Gender Selection -->
+                            <div class="mb-3">
+                                <label>Gender</label>
+                                <div>
+                                    <input type="radio" id="male" th:field="*{gender}" value="Male" required />
+                                    <label for="male">Male</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="female" th:field="*{gender}" value="Female" required />
+                                    <label for="female">Female</label>
+                                </div>
+                                <small class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></small>
+                            </div>
+
+                            <button class="btn btn-primary col-md-12">Register</button>
+                            <div class="text-center mt-3">
+                                <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

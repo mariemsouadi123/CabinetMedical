@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Update Appointment</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    /* Soft pastel pink gradient background */
+    body {
+      background: paleturquoise;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* White form card with shadow */
+    .card {
+      max-width: 500px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+      background: #fff;
+    }
+
+    h2 {
+      color: #d63384;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .form-control, .form-select {
+      border-radius: 8px;
+    }
+
+    /* Buttons Styling */
+    .btn-primary {
+      background-color: #d63384;
+      border: none;
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .btn-primary:hover {
+      background-color: #b0276b;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Update Appointment</h2>
+  <form th:action="@{/appointments/update/{id}(id=${appointment.id})}" method="post">
+    <div class="mb-3">
+      <label class="form-label fw-bold">Date:</label>
+      <input type="date" class="form-control" name="date" th:value="${appointment.date}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-bold">Time:</label>
+      <input type="time" class="form-control" name="time" th:value="${appointment.time}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-bold">Status:</label>
+      <select class="form-select" name="status">
+        <option th:value="Scheduled" th:selected="${appointment.status == 'Scheduled'}">Scheduled</option>
+        <option th:value="Completed" th:selected="${appointment.status == 'Completed'}">Completed</option>
+        <option th:value="Cancelled" th:selected="${appointment.status == 'Cancelled'}">Cancelled</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Appointment</button>
+    <a href="/dashboard" class="btn btn-secondary mt-2">Cancel</a>
+  </form>
+</div>
+
+</body>
+</html>

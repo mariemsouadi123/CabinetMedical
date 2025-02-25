@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Apply gradient background to the entire page */
+        body {
+            background: #acb6e5;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Card styling */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: mediumpurple;
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Table styling */
+        .table thead {
+            background-color:  mediumpurple;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        /* Buttons */
+        .btn-outline-warning {
+            border-color: #ffc107;
+            color: #ffc107;
+        }
+
+        .btn-outline-warning:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.5em 0.75em;
+            border-radius: 10px;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+        }
+
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        /* Text styling */
+        .text-primary {
+            color: #007bff !important;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-header">Doctor Dashboard</div>
+                <div class="card-body">
+
+                    <!-- Welcome Message -->
+                    <div class="text-center mb-4">
+                        <h4>Welcome, <span class="text-primary" th:text="${doctor.username}"></span>!</h4>
+                        <p class="text-muted">Email: <span th:text="${doctor.email}"></span></p>
+                    </div>
+
+                    <!-- Profile Button -->
+                    <div class="text-center mb-3">
+                        <a th:href="@{/doctor/profile}" class="btn btn-outline-warning">Profile</a>
+                    </div>
+
+                    <hr>
+
+                    <!-- Upcoming Appointments -->
+                    <h5 class="text-center text-secondary mt-4">Upcoming Appointments</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mt-3">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="appointment : ${appointments}">
+                                <td th:text="${appointment.user.fullName}"></td>
+                                <td th:text="${#temporals.format(appointment.date, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${#temporals.format(appointment.time, 'HH:mm')}"></td>
+                                <td>
+                                    <span th:classappend="${appointment.status == 'Pending' ? 'badge bg-warning'
+                                                          : appointment.status == 'Confirmed' ? 'badge bg-success'
+                                                          : 'badge bg-danger'}"
+                                          th:text="${appointment.status}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Add Consultation button -->
+                                    <a th:href="@{/consultations/add/{appointmentId}(appointmentId=${appointment.id})}"
+                                       class="btn btn-sm btn-outline-primary">Add Consultation</a>
+                                    <!-- Delete Appointment button -->
+                                    <form th:action="@{/doctor/appointments/delete/{id}(id=${appointment.id})}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Logout Button -->
+                    <div class="text-center mt-4">
+                        <a th:href="@{/doctor/logout}" class="btn btn-danger">Logout</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

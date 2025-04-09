@@ -86,6 +86,7 @@ public class ConsultationController {
             return "redirect:/doctor/dashboard";
         }
 
+        // Fetch the appointment from database to ensure it's managed
         Optional<Appointment> appointmentOpt = appointmentRepository.findById(consultation.getAppointment().getId());
 
         if (appointmentOpt.isEmpty()) {
@@ -94,39 +95,84 @@ public class ConsultationController {
 
         Appointment appointment = appointmentOpt.get();
 
-        // 🔹 Vérifier que l'appointment contient bien un user
+        // Verify the appointment has a user
         if (appointment.getUser() == null) {
-            return "redirect:/doctor/dashboard"; // ou gérer l'erreur avec un message
+            return "redirect:/doctor/dashboard";
         }
 
+        // Update the appointment status to "Completed" or similar
+        appointment.setStatus("Completed");
+        appointmentRepository.save(appointment); // Ensure appointment is saved first
+
+        // Set all required fields on the consultation
         consultation.setAppointment(appointment);
         consultation.setDoctor(doctor);
-        consultation.setUser(appointment.getUser()); // ✅ Correction : affecter l'user
+        consultation.setUser(appointment.getUser());
         consultation.setConsultationDate(LocalDateTime.now());
 
+        // Save the consultation
         consultationRepository.save(consultation);
 
         return "redirect:/doctor/dashboard";
     }
 
-
     // ✅ Consultation Vue pour un Patient
     @GetMapping("/view/{appointmentId}")
     public String viewConsultation(@PathVariable Long appointmentId, Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
-
-        if (loggedInUser == null) {
-            return "redirect:/login";
-        }
+        if (loggedInUser == null) return "redirect:/login";
 
         Optional<Consultation> consultationOpt = consultationRepository.findByAppointmentId(appointmentId);
-
-        if (consultationOpt.isPresent()) {
-            model.addAttribute("consultation", consultationOpt.get());
-            return "view-consultation";
-        } else {
-            return "redirect:/appointments"; // Redirection si la consultation n'existe pas
+        if (consultationOpt.isEmpty()) {
+            return "redirect:/appointments";
         }
+
+        Consultation consultation = consultationOpt.get();
+        if (!consultation.getUser().getId().equals(loggedInUser.getId())) {
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("consultation", consultation);
+        return "view-consultation";
+    }
+
+    // Afficher le formulaire de paiement
+    @GetMapping("/payment/{consultationId}")
+    public String showPaymentForm(@PathVariable Long consultationId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) return "redirect:/login";
+
+        Optional<Consultation> consultationOpt = consultationRepository.findById(consultationId);
+        if (consultationOpt.isEmpty() || !consultationOpt.get().getUser().getId().equals(loggedInUser.getId())) {
+            return "redirect:/dashboard";
+        }
+
+        model.addAttribute("consultation", consultationOpt.get());
+        return "payment-form";
+    }
+
+    // Traiter le paiement
+    @PostMapping("/process-payment")
+    public String processPayment(
+            @RequestParam Long consultationId,
+            @RequestParam String paymentMethod,
+            HttpSession session) {
+
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) return "redirect:/login";
+
+        Optional<Consultation> consultationOpt = consultationRepository.findById(consultationId);
+        if (consultationOpt.isEmpty() || !consultationOpt.get().getUser().getId().equals(loggedInUser.getId())) {
+            return "redirect:/dashboard";
+        }
+
+        Consultation consultation = consultationOpt.get();
+        consultation.setPaymentStatus("PAID");
+        consultation.setPaymentMethod(paymentMethod);
+        consultation.setPaymentDate(LocalDateTime.now());
+        consultationRepository.save(consultation);
+
+        return "redirect:/consultations/view/" + consultation.getAppointment().getId() + "?paymentSuccess=true";
     }
 
 }

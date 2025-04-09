@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background: mediumpurple;
+            color: white;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        .card-header {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.4rem;
+            text-align: center;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .payment-option {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .payment-option.selected {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffdd59;
+        }
+        .card-details {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-color: #ffdd59;
+            box-shadow: 0 0 0 0.25rem rgba(255, 221, 89, 0.25);
+        }
+        .form-label {
+            color: #ffdd59;
+        }
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .card-icons img {
+            height: 30px;
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Payment for Consultation
+        </div>
+        <div class="card-body">
+            <div class="details mb-4">
+                <p><strong>Patient:</strong> <span th:text="${consultation.user.fullName}"></span></p>
+                <p><strong>Amount:</strong> <span th:text="${consultation.price}"></span> $</p>
+            </div>
+
+            <form th:action="@{/consultations/process-payment}" method="post">
+                <input type="hidden" name="consultationId" th:value="${consultation.id}">
+
+                <h5 class="mb-3">Select Payment Method:</h5>
+
+                <div class="payment-option" onclick="selectPaymentMethod('CARD')">
+                    <input type="radio" id="card" name="paymentMethod" value="CARD" required>
+                    <label for="card">Credit/Debit Card</label>
+                </div>
+
+                <!-- Card Details Section (hidden by default) -->
+                <div class="card-details" id="cardDetails">
+                    <div class="card-icons">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" alt="Visa">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" alt="Mastercard">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple Pay">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" name="cardNumber"
+                               placeholder="1234 5678 9012 3456" pattern="[0-9\s]{16,19}"
+                               maxlength="19" oninput="formatCardNumber(this)">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="expiryDate" class="form-label">Expiry Date</label>
+                                <input type="text" class="form-control" id="expiryDate" name="expiryDate"
+                                       placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                                       maxlength="5" oninput="formatExpiryDate(this)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv"
+                                       placeholder="123" pattern="[0-9]{3,4}"
+                                       maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardHolder" class="form-label">Card Holder Name</label>
+                        <input type="text" class="form-control" id="cardHolder" name="cardHolder"
+                               placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div class="payment-option" onclick="selectPaymentMethod('CASH')">
+                    <input type="radio" id="cash" name="paymentMethod" value="CASH">
+                    <label for="cash">Cash</label>
+                </div>
+
+                <div class="payment-option" onclick="selectPaymentMethod('CHECK')">
+                    <input type="radio" id="check" name="paymentMethod" value="CHECK">
+                    <label for="check">Check</label>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Complete Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function selectPaymentMethod(method) {
+        document.querySelectorAll('.payment-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        event.currentTarget.classList.add('selected');
+        document.querySelector(`input[value="${method}"]`).checked = true;
+
+        // Show/hide card details based on selection
+        const cardDetails = document.getElementById('cardDetails');
+        if (method === 'CARD') {
+            cardDetails.style.display = 'block';
+        } else {
+            cardDetails.style.display = 'none';
+        }
+    }
+
+    function formatCardNumber(input) {
+        // Remove all non-digit characters
+        let value = input.value.replace(/\D/g, '');
+
+        // Add space after every 4 digits
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+        // Update the input value
+        input.value = value;
+    }
+
+    function formatExpiryDate(input) {
+        // Remove all non-digit characters
+        let value = input.value.replace(/\D/g, '');
+
+        // Add slash after 2 digits (MM/YY)
+        if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+
+        // Update the input value
+        input.value = value;
+    }
+
+    // Initialize by hiding card details
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('cardDetails').style.display = 'none';
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -16,9 +16,11 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Consultation consultation;
 
     private LocalDate date;
     private LocalTime time;
@@ -94,4 +96,6 @@ public class Appointment {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+
 }

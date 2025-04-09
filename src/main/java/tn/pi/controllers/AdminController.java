@@ -57,10 +57,15 @@ public class AdminController {
             return "redirect:/login";
         }
 
-        userService.deleteByEmail(userService.findById(id).get().getEmail());
-        return "redirect:/admin/users";
-    }
+        try {
+            userService.deleteById(id);
+        } catch (Exception e) {
+            // Log the error and redirect with error message
+            return "redirect:/admin/users?error=deleteFailed";
+        }
 
+        return "redirect:/admin/users?success=true";
+    }
     // ==================== DOCTOR MANAGEMENT ====================
     @GetMapping("/doctors")
     public String listDoctors(Model model, HttpSession session) {

@@ -1,7 +1,9 @@
 package tn.pi.Services;
 
 import jakarta.transaction.Transactional;
+import tn.pi.Repostory.AppointmentRepository;
 import tn.pi.Repostory.UserRepository;
+import tn.pi.entities.Appointment;
 import tn.pi.entities.User;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
@@ -52,5 +55,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepo.findAll();
+    }
+    @Transactional
+    public void save(User user) {
+        userRepo.save(user);
+        userRepo.flush();
+    }
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        // First get the user with all relationships loaded
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // This will cascade delete all appointments and consultations
+        userRepo.delete(user);
     }
 }

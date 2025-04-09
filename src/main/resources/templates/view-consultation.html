@@ -15,7 +15,7 @@
       align-items: center;
     }
     .container {
-      max-width: 600px;
+      max-width: 800px;
     }
     .card {
       background: rgba(255, 255, 255, 0.15);
@@ -35,15 +35,58 @@
       font-weight: bold;
     }
     .card-body {
-      padding: 20px;
+      padding: 30px;
     }
     .details p {
-      margin: 10px 0;
+      margin: 12px 0;
       font-size: 1.1rem;
+      padding: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .details strong {
       color: #ffdd59;
+      min-width: 150px;
+      display: inline-block;
     }
+    .payment-status {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .paid {
+      background-color: rgba(40, 167, 69, 0.2);
+      border: 1px solid #28a745;
+    }
+    .unpaid {
+      background-color: rgba(220, 53, 69, 0.2);
+      border: 1px solid #dc3545;
+    }
+    .btn-pay {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      transition: all 0.3s;
+    }
+    .btn-pay:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-return {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      margin-top: 15px;
+      transition: all 0.3s;
+    }
+    .btn-return:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
   </style>
 </head>
 <body>
@@ -57,16 +100,57 @@
       <div class="details">
         <p><strong>Patient:</strong> <span th:text="${consultation.user.fullName}"></span></p>
         <p><strong>Doctor:</strong> <span th:text="${consultation.doctor.username}"></span></p>
-        <p><strong>Date:</strong> <span th:text="${consultation.consultationDate}"></span></p>
+        <p><strong>Date:</strong>
+          <span th:text="${#temporals.format(consultation.consultationDate, 'dd/MM/yyyy HH:mm')}"></span>
+        </p>
         <p><strong>Diagnosis:</strong> <span th:text="${consultation.diagnosis}"></span></p>
         <p><strong>Notes:</strong> <span th:text="${consultation.notes}"></span></p>
         <p><strong>Prescription:</strong> <span th:text="${consultation.prescription}"></span></p>
         <p><strong>Price:</strong> <span th:text="${consultation.price}"></span> $</p>
       </div>
+
+      <!-- Payment Status Section -->
+      <div th:if="${consultation.paymentStatus == 'PAID'}"
+           class="payment-status paid">
+        <h4>Payment Completed</h4>
+        <p>Paid on <span th:text="${#temporals.format(consultation.paymentDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+        <p>Method: <span th:text="${consultation.paymentMethod}"></span></p>
+        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #28a745;"></i>
+      </div>
+
+      <div th:if="${consultation.paymentStatus != 'PAID'}"
+           class="text-center mt-4">
+        <div class="payment-status unpaid mb-3">
+          <h4>Payment Pending</h4>
+          <p>Please complete the payment for this consultation</p>
+        </div>
+        <a th:href="@{/consultations/payment/{id}(id=${consultation.id})}"
+           class="btn btn-pay">
+          Proceed to Payment
+        </a>
+      </div>
     </div>
   </div>
-</div>
+  <div class="text-center mt-3">
+    <a th:href="@{/dashboard}" class="btn btn-return">
+      <i class="bi bi-arrow-left"></i> Retourner à la page principale
+    </a>
+  </div>
 
+<!-- Payment Success Notification -->
+<script th:if="${param.paymentSuccess}">
+  document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+      title: 'Payment Successful!',
+      text: 'Your payment has been processed successfully.',
+      icon: 'success',
+      confirmButtonColor: '#6a11cb'
+    });
+  });
+</script>
+
+<!-- Include SweetAlert for beautiful alerts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

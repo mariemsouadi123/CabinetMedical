@@ -22,9 +22,18 @@ public class Consultation {
     @Column(length = 500)
     private String prescription;
 
+    @Column(name = "payment_status")
+    private String paymentStatus = "UNPAID"; // Valeurs possibles: UNPAID, PENDING, PAID
+
+    @Column(name = "payment_date")
+    private LocalDateTime paymentDate;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
     private LocalDateTime consultationDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 
@@ -72,4 +81,28 @@ public class Consultation {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
 }

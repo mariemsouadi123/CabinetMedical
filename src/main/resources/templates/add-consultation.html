@@ -18,6 +18,17 @@
   .btn {
     background-color: plum;
   }
+  .btn-return {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: mediumpurple;
+    margin-top: 15px;
+    transition: all 0.3s;
+  }
+  .btn-return:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: mediumpurple;
+  }
 </style>
 <section>
   <div class="container p-3">
@@ -58,7 +69,10 @@
                 <button type="submit" class="btn btn-primary">Save Consultation</button>
               </div>
             </form>
-
+            <div class="text-center mt-3">
+              <a th:href="@{/doctor/dashboard}" class="btn btn-return">
+                <i class="bi bi-arrow-left"></i> Retourner à la page principale
+              </a>
           </div>
         </div>
       </div>

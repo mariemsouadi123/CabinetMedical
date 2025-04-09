@@ -57,7 +57,7 @@ public class PatientController {
 
         if (result.hasErrors()) {
             logger.info("Validation errors: {}", result.getAllErrors());
-            return "edit-profile"; // Return to edit page if validation fails
+            return "edit-profile"; // Retour à la page d'édition si erreurs
         }
 
         logger.info("Updating profile for user: {}", loggedInUser.getEmail());
@@ -67,19 +67,22 @@ public class PatientController {
         if (userFromDb.isPresent()) {
             User user = userFromDb.get();
 
+            // Mise à jour des champs modifiés
             user.setFullName(updatedUser.getFullName());
             user.setAge(updatedUser.getAge());
             user.setPhone(updatedUser.getPhone());
             user.setAddress(updatedUser.getAddress());
             user.setGender(updatedUser.getGender());
 
-            // ✅ Keep existing password
-            user.setPassword(userFromDb.get().getPassword());
+            // Garde l'ancien mot de passe si l'utilisateur n'en fournit pas un nouveau
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                user.setPassword(updatedUser.getPassword());
+            }
 
-            logger.info("New profile data: {}", user);
+            // Sauvegarde de l'utilisateur
+            userService.save(user); // Assure-toi que cette méthode existe dans UserService
 
-            userService.updateUser(user);
-
+            // Mise à jour de la session
             session.setAttribute("loggedInUser", user);
             logger.info("Session updated successfully.");
         } else {

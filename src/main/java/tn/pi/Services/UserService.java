@@ -12,7 +12,11 @@ public interface UserService {
     void deleteByEmail(String email);
     void updateUser(User user); // Ajoute cette méthode
     Optional<User> findById(Long id);
+    
 
 
     List<User> getAllUsers();
+    void save(User user);
+
+    void deleteById(Long id);
 }

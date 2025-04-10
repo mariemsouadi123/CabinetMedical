@@ -1,4 +1,4 @@
-package tn.pi.repository;
+package tn.pi.Repostory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import tn.pi.entities.Consultation;

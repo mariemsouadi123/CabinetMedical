@@ -4,7 +4,7 @@ import tn.pi.entities.Consultation;
 import tn.pi.entities.Doctor;
 import tn.pi.entities.Appointment;
 import tn.pi.entities.User;
-import tn.pi.repository.ConsultationRepository;
+import tn.pi.Repostory.ConsultationRepository;
 import tn.pi.Repostory.AppointmentRepository;
 import tn.pi.Repostory.DoctorRepository;
 

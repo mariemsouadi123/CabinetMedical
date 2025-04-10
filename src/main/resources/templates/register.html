@@ -7,40 +7,121 @@
 </head>
 <body>
 <section>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <div class="card">
-                    <div class="card-header text-center fs-4"> Register Page</div>
+    <style>
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
 
-                    <!-- Display session message if present -->
+        .card-header {
+            background: linear-gradient(90deg, var(--blue-4), var(--blue-6));
+            color: var(--white);
+            font-weight: 600;
+            padding: 1.25rem;
+            border-radius: 10px 10px 0 0 !important;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--blue-2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--blue-5);
+            box-shadow: 0 0 0 0.25rem rgba(26, 136, 255, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: var(--blue-4);
+            opacity: 0.7;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--blue-5), var(--blue-6));
+            border: none;
+            padding: 0.75rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--blue-6), var(--blue-5));
+            transform: translateY(-2px);
+        }
+
+        label {
+            font-weight: 500;
+            color: var(--blue-6);
+            margin-bottom: 0.5rem;
+        }
+
+        .text-danger {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        .text-success {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 1.5rem;
+        }
+
+        input[type="radio"] {
+            margin-right: 0.5rem;
+            accent-color: var(--blue-5);
+        }
+    </style>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Patient Registration</div>
+
                     <th:block th:if="${msg}">
-                        <p class="text-center fs-3 text-success">[[${msg}]]</p>
+                        <p class="text-center text-success mt-3">[[${msg}]]</p>
                     </th:block>
 
                     <div class="card-body">
                         <form th:action="@{/createUser}" th:object="${user}" method="post">
                             <div class="mb-3">
                                 <label>Full Name</label>
-                                <input type="text" th:field="*{fullName}" class="form-control" required />
+                                <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter full name" required />
                                 <small class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label>Email</label>
-                                <input type="email" th:field="*{email}" class="form-control" required />
+                                <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email" required />
                                 <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label>Password</label>
-                                <input type="password" th:field="*{password}" class="form-control" required />
+                                <input type="password" th:field="*{password}" class="form-control" placeholder="Create password" required />
                                 <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
                             </div>
 
                             <div class="mb-3">
                                 <label>Age</label>
-                                <input type="number" th:field="*{age}" class="form-control" required />
+                                <input type="number" th:field="*{age}" class="form-control" placeholder="Enter age" required />
                                 <small class="text-danger" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></small>
                             </div>
 
@@ -51,34 +132,32 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="text" id="phone" th:field="*{phone}" class="form-control" />
+                                <label>Phone Number</label>
+                                <input type="text" th:field="*{phone}" class="form-control" placeholder="Enter phone number" />
                                 <small class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
                             </div>
 
                             <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" id="address" th:field="*{address}" class="form-control" />
+                                <label>Address</label>
+                                <input type="text" th:field="*{address}" class="form-control" placeholder="Enter address" />
                                 <small class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
                             </div>
 
-                            <!-- Gender Selection -->
                             <div class="mb-3">
                                 <label>Gender</label>
-                                <div>
+                                <div class="mt-2">
                                     <input type="radio" id="male" th:field="*{gender}" value="Male" required />
-                                    <label for="male">Male</label>
-                                </div>
-                                <div>
+                                    <label for="male" class="radio-label">Male</label>
+
                                     <input type="radio" id="female" th:field="*{gender}" value="Female" required />
-                                    <label for="female">Female</label>
+                                    <label for="female" class="radio-label">Female</label>
                                 </div>
                                 <small class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></small>
                             </div>
 
-                            <button class="btn btn-primary col-md-12">Register</button>
+                            <button class="btn btn-primary w-100 mt-3">Create Account</button>
                             <div class="text-center mt-3">
-                                <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+                                <p>Already have an account? <a th:href="@{/login}">Sign in here</a></p>
                             </div>
                         </form>
                     </div>

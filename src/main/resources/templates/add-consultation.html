@@ -2,83 +2,172 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Add Consultation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Consultation | MediCare</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4caf50;
+      --primary-light: #66bb6a;
+      --primary-dark: #388e3c;
+      --secondary: #43a047;
+      --accent: #5cb85c;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,
+      #ffffff 0%,
+      #e8f5e9 30%,
+      #c8e6c9 70%,
+      #a5d6a7 100%);
+      min-height: 100vh;
+      color: #333;
+      background-attachment: fixed;
+      padding: 2rem;
+    }
+
+    .consultation-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .consultation-card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255,255,255,0.5);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
+      color: white;
+      padding: 1.5rem;
+      font-weight: 500;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+      border-radius: 8px;
+      padding: 0.75rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
+
+    textarea.form-control {
+      min-height: 100px;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-save:hover {
+      background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-return {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      color: var(--primary-dark);
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .btn-return:hover {
+      background: rgba(255,255,255,0.7);
+      color: var(--primary-dark);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<style>
-  body {
-    background: plum;
 
-  }
-  .card-header{
-    background-color: plum;
-    color:white;
-  }
-  .btn {
-    background-color: plum;
-  }
-  .btn-return {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: mediumpurple;
-    margin-top: 15px;
-    transition: all 0.3s;
-  }
-  .btn-return:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: mediumpurple;
-  }
-</style>
-<section>
-  <div class="container p-3">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <div class="card shadow">
-          <div class="card-header text-center fs-4">Add Consultation</div>
-          <div class="card-body">
-
-            <form th:action="@{/consultations/save}" th:object="${consultation}" method="post">
-              <input type="hidden" th:field="*{appointment.id}" />
-              <div class="mb-3">
-                <label class="form-label">Patient Name</label>
-                <input type="text" class="form-control" th:value="${userFullName}" readonly />
-              </div>
-
-              <div class="mb-3">
-                <label for="diagnosis" class="form-label">Diagnosis</label>
-                <textarea class="form-control" id="diagnosis" th:field="*{diagnosis}" rows="3"></textarea>
-              </div>
-
-              <div class="mb-3">
-                <label for="prescription" class="form-label">Prescription</label>
-                <textarea class="form-control" id="prescription" th:field="*{prescription}" rows="3"></textarea>
-              </div>
-
-              <div class="mb-3">
-                <label for="notes" class="form-label">Notes</label>
-                <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
-              </div>
-
-              <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price" th:field="*{price}" />
-              </div>
-
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save Consultation</button>
-              </div>
-            </form>
-            <div class="text-center mt-3">
-              <a th:href="@{/doctor/dashboard}" class="btn btn-return">
-                <i class="bi bi-arrow-left"></i> Retourner à la page principale
-              </a>
-          </div>
+<div class="consultation-container">
+  <div class="consultation-card">
+    <div class="card-header">
+      Add Consultation
+    </div>
+    <div class="card-body">
+      <form th:action="@{/consultations/save}" th:object="${consultation}" method="post">
+        <input type="hidden" th:field="*{appointment.id}" />
+        <div class="mb-3">
+          <label class="form-label">Patient Name</label>
+          <input type="text" class="form-control" th:value="${userFullName}" readonly />
         </div>
-      </div>
+
+        <div class="mb-3">
+          <label for="diagnosis" class="form-label">Diagnosis</label>
+          <textarea class="form-control" id="diagnosis" th:field="*{diagnosis}" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="prescription" class="form-label">Prescription</label>
+          <textarea class="form-control" id="prescription" th:field="*{prescription}" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea class="form-control" id="notes" th:field="*{notes}" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label">Price ($)</label>
+          <input type="number" class="form-control" id="price" th:field="*{price}" required step="0.01" min="0"/>
+        </div>
+
+        <div class="d-flex flex-column">
+          <button type="submit" class="btn btn-save">Save Consultation</button>
+          <a th:href="@{/doctor/dashboard}" class="btn btn-return mt-2">
+            Return to Dashboard
+          </a>
+        </div>
+      </form>
     </div>
   </div>
-</section>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

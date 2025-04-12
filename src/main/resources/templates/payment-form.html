@@ -1,100 +1,219 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Payment</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Payment | MediCare</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #4caf50;
+            --primary-light: #66bb6a;
+            --primary-dark: #388e3c;
+            --secondary: #43a047;
+            --accent: #5cb85c;
+        }
+
         body {
-            background: mediumpurple;
-            color: white;
-            font-family: Arial, sans-serif;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,
+            #ffffff 0%,
+            #e8f5e9 30%,
+            #c8e6c9 70%,
+            #a5d6a7 100%);
+            min-height: 100vh;
+            color: #333;
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 2rem;
         }
-        .container {
-            max-width: 600px;
+
+        .dashboard-container {
+            max-width: 800px;
+            width: 100%;
         }
-        .card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+
+        .doctor-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .doctor-header h1 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .doctor-header p {
+            opacity: 0.8;
+            margin-bottom: 0;
+        }
+
+        .doctor-card {
+            border: none;
             border-radius: 12px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
         }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
         .card-header {
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
             color: white;
-            font-size: 1.4rem;
-            text-align: center;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            padding: 15px;
-            font-weight: bold;
+            padding: 1.5rem;
+            font-weight: 500;
+            font-size: 1.25rem;
+            border-radius: 12px 12px 0 0 !important;
         }
+
         .card-body {
-            padding: 20px;
+            padding: 2rem;
         }
+
+        .btn-doctor {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-doctor:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+            color: white;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+        }
+
+        .btn-outline-doctor {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline-doctor:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
         .payment-option {
             margin: 15px 0;
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.7);
         }
+
         .payment-option:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(76, 175, 80, 0.1);
+            border-color: var(--primary-light);
         }
+
         .payment-option.selected {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #ffdd59;
+            background: rgba(76, 175, 80, 0.15);
+            border-color: var(--primary);
         }
+
         .card-details {
             display: none;
             margin-top: 20px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
+
         .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #ced4da;
         }
+
         .form-control:focus {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border-color: #ffdd59;
-            box-shadow: 0 0 0 0.25rem rgba(255, 221, 89, 0.25);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
         }
+
         .form-label {
-            color: #ffdd59;
+            font-weight: 500;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
         }
-        .card-icons {
+
+        .details p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .details strong {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .btn-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
-        .card-icons img {
-            height: 30px;
-            filter: brightness(0) invert(1);
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+                background: linear-gradient(135deg,
+                #ffffff 10%,
+                #e8f5e9 30%,
+                #a5d6a7 70%,
+                #81c784 100%);
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+<div class="dashboard-container">
+    <div class="doctor-header">
+        <div class="header-content">
+            <h1>Payment for Consultation</h1>
+            <p>Complete the payment process for your consultation</p>
+        </div>
+        <div>
+            <a th:href="@{/dashboard}" class="btn btn-outline-doctor" style="color: white; border-color: white;">Dashboard</a>
+        </div>
+    </div>
 
-<div class="container">
-    <div class="card">
+    <div class="doctor-card">
         <div class="card-header">
-            Payment for Consultation
+            Payment Information
         </div>
         <div class="card-body">
             <div class="details mb-4">
@@ -114,12 +233,6 @@
 
                 <!-- Card Details Section (hidden by default) -->
                 <div class="card-details" id="cardDetails">
-                    <div class="card-icons">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" alt="Visa">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" alt="Mastercard">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple Pay">
-                    </div>
-
                     <div class="form-group">
                         <label for="cardNumber" class="form-label">Card Number</label>
                         <input type="text" class="form-control" id="cardNumber" name="cardNumber"
@@ -163,15 +276,14 @@
                     <label for="check">Check</label>
                 </div>
 
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Complete Payment</button>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-doctor">Complete Payment</button>
+                    <a th:href="@{/consultations/view/{id}(id=${consultation.id})}" class="btn btn-outline-doctor">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
 
 <script>
     function selectPaymentMethod(method) {

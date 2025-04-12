@@ -1,82 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Update Appointment</title>
+  <title>Update Appointment | MediCare</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Soft pastel pink gradient background */
+    :root {
+      --primary: #e6a67d;
+      --primary-light: #e8b895;
+      --primary-dark: #c4875e;
+      --secondary: #d29872;
+      --accent: #d9a08c;
+      --success: #28a745;
+      --success-dark: #218838;
+    }
+
     body {
-      background: paleturquoise;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,
+      #ffffff 0%,
+      #f5e9e0 30%,
+      #e8cfbf 70%,
+      #e6c4b0 100%);
       min-height: 100vh;
+      color: #333;
+      background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 2rem;
     }
 
-    /* White form card with shadow */
-    .card {
-      max-width: 500px;
-      padding: 25px;
+    .appointment-card {
+      border: none;
       border-radius: 12px;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-      background: #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
     }
 
-    h2 {
-      color: #d63384;
+    .appointment-card h2 {
+      color: var(--success); /* Changed to green */
+      font-weight: 600;
       text-align: center;
-      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
     }
 
     .form-control, .form-select {
       border-radius: 8px;
+      padding: 0.75rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 1rem;
     }
 
-    /* Buttons Styling */
-    .btn-primary {
-      background-color: #d63384;
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.25rem rgba(230, 166, 125, 0.25);
+    }
+
+    .btn-update {
+      background: linear-gradient(135deg, var(--success), var(--success-dark)); /* Changed to green */
       border: none;
-      width: 100%;
       border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+      width: 100%;
     }
 
-    .btn-primary:hover {
-      background-color: #b0276b;
+    .btn-update:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+      color: white;
+      background: linear-gradient(135deg, var(--success-dark), #1e7e34);
     }
 
-    .btn-secondary {
-      width: 100%;
+    .btn-cancel {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      color: var(--primary-dark);
       border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .btn-cancel:hover {
+      background: rgba(255,255,255,0.7);
+      color: var(--primary-dark);
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="card">
+<div class="appointment-card">
   <h2>Update Appointment</h2>
   <form th:action="@{/appointments/update/{id}(id=${appointment.id})}" method="post">
     <div class="mb-3">
-      <label class="form-label fw-bold">Date:</label>
+      <label class="form-label">Date:</label>
       <input type="date" class="form-control" name="date" th:value="${appointment.date}" required>
     </div>
     <div class="mb-3">
-      <label class="form-label fw-bold">Time:</label>
+      <label class="form-label">Time:</label>
       <input type="time" class="form-control" name="time" th:value="${appointment.time}" required>
     </div>
     <div class="mb-3">
-      <label class="form-label fw-bold">Status:</label>
+      <label class="form-label">Status:</label>
       <select class="form-select" name="status">
         <option th:value="Scheduled" th:selected="${appointment.status == 'Scheduled'}">Scheduled</option>
         <option th:value="Completed" th:selected="${appointment.status == 'Completed'}">Completed</option>
         <option th:value="Cancelled" th:selected="${appointment.status == 'Cancelled'}">Cancelled</option>
       </select>
     </div>
-    <button type="submit" class="btn btn-primary">Update Appointment</button>
-    <a href="/dashboard" class="btn btn-secondary mt-2">Cancel</a>
+    <button type="submit" class="btn btn-update">Update Appointment</button>
+    <a th:href="@{/dashboard}" class="btn btn-cancel">Cancel</a>
   </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,98 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Consultation Details</title>
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultation Details | MediCare</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #e6a67d;
+      --primary-light: #e8b895;
+      --primary-dark: #c4875e;
+      --secondary: #d29872;
+      --accent: #d9a08c;
+      --success: #28a745;
+      --success-dark: #218838;
+      --danger: #dc3545;
+    }
+
     body {
-      background: mediumpurple;
-      color: white;
-      font-family: Arial, sans-serif;
-      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,
+      #ffffff 0%,
+      #f5e9e0 30%,
+      #e8cfbf 70%,
+      #e6c4b0 100%);
+      min-height: 100vh;
+      color: #333;
+      background-attachment: fixed;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 2rem;
     }
-    .container {
+
+    .consultation-container {
       max-width: 800px;
+      width: 100%;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
+
+    .consultation-card {
+      border: none;
       border-radius: 12px;
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-      color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255,255,255,0.5);
+      overflow: hidden;
     }
+
     .card-header {
-      background: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, var(--secondary), var(--accent));
       color: white;
-      font-size: 1.4rem;
+      padding: 1.5rem;
+      font-weight: 500;
+      font-size: 1.25rem;
       text-align: center;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-      padding: 15px;
-      font-weight: bold;
     }
+
     .card-body {
-      padding: 30px;
+      padding: 2rem;
     }
+
     .details p {
-      margin: 12px 0;
-      font-size: 1.1rem;
-      padding: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 1rem;
     }
+
     .details strong {
-      color: #ffdd59;
+      color: var(--primary-dark);
       min-width: 150px;
       display: inline-block;
     }
+
     .payment-status {
-      margin-top: 25px;
-      padding: 15px;
+      margin: 2rem 0 1rem;
+      padding: 1.5rem;
       border-radius: 8px;
       text-align: center;
     }
+
     .paid {
-      background-color: rgba(40, 167, 69, 0.2);
-      border: 1px solid #28a745;
+      background-color: rgba(40, 167, 69, 0.1);
+      border: 1px solid var(--success);
     }
+
     .unpaid {
-      background-color: rgba(220, 53, 69, 0.2);
-      border: 1px solid #dc3545;
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid var(--danger);
     }
+
     .btn-pay {
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      background: linear-gradient(135deg, var(--success), var(--success-dark));
       border: none;
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      margin-top: 20px;
-      transition: all 0.3s;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+      width: 100%;
+      max-width: 300px;
+      margin: 1rem auto 0;
     }
+
     .btn-pay:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+      color: white;
+      background: linear-gradient(135deg, var(--success-dark), #1e7e34);
     }
 
     .btn-return {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      margin-top: 15px;
-      transition: all 0.3s;
-    }
-    .btn-return:hover {
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      color: var(--primary-dark);
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: 1.5rem;
+      display: inline-block;
+      text-align: center;
     }
 
+    .btn-return:hover {
+      background: rgba(255,255,255,0.7);
+      color: var(--primary-dark);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .details strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+    }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="card">
+<div class="consultation-container">
+  <div class="consultation-card">
     <div class="card-header">
       Consultation Details
     </div>
@@ -115,7 +168,6 @@
         <h4>Payment Completed</h4>
         <p>Paid on <span th:text="${#temporals.format(consultation.paymentDate, 'dd/MM/yyyy HH:mm')}"></span></p>
         <p>Method: <span th:text="${consultation.paymentMethod}"></span></p>
-        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #28a745;"></i>
       </div>
 
       <div th:if="${consultation.paymentStatus != 'PAID'}"
@@ -131,11 +183,13 @@
       </div>
     </div>
   </div>
-  <div class="text-center mt-3">
+
+  <div class="text-center">
     <a th:href="@{/dashboard}" class="btn btn-return">
-      <i class="bi bi-arrow-left"></i> Retourner à la page principale
+      Return to Dashboard
     </a>
   </div>
+</div>
 
 <!-- Payment Success Notification -->
 <script th:if="${param.paymentSuccess}">
@@ -144,7 +198,7 @@
       title: 'Payment Successful!',
       text: 'Your payment has been processed successfully.',
       icon: 'success',
-      confirmButtonColor: '#6a11cb'
+      confirmButtonColor: 'var(--success)'
     });
   });
 </script>

@@ -3,113 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Patient Profile</title>
+  <title>Patient Profile | MediCare</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
+    :root {
+      --primary: #e6a67d;
+      --primary-light: #e8b895;
+      --primary-dark: #c4875e;
+      --secondary: #d29872;
+      --accent: #d9a08c;
+      --success: #28a745;
+    }
+
     body {
-      background: #acb6e5;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,
+      #ffffff 0%,
+      #f5e9e0 30%,
+      #e8cfbf 70%,
+      #e6c4b0 100%);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      color: #333;
+      background-attachment: fixed;
     }
-    .navbar {
-      background-color: mediumpurple;
+
+    .dashboard-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
     }
-    .navbar-brand, .nav-link {
-      color: white !important;
+
+    .user-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      backdrop-filter: blur(5px);
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
     }
+
+    .user-header h1 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
     .profile-card {
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 25px;
+      border: none;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-card h2 {
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
       text-align: center;
     }
-    .profile-card h2 {
-      color: #0056b3;
-      font-weight: bold;
+
+    .profile-info p {
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
-    .btn-update {
-      background-color: #007bff;
-      width: 100%;
+
+    .profile-info strong {
+      color: var(--primary-dark);
+      min-width: 120px;
+      display: inline-block;
+    }
+
+    .btn-edit {
+      background: linear-gradient(135deg, var(--success), #218838);
+      border: none;
       border-radius: 8px;
+      padding: 0.75rem 1.5rem;
       color: white;
-      font-size: 16px;
-      padding: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+      width: 100%;
+      margin-bottom: 1rem;
     }
+
+    .btn-edit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+      color: white;
+      background: linear-gradient(135deg, #218838, #1e7e34);
+    }
+
     .btn-delete {
-      background-color: #dc3545;
-      width: 100%;
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      border: none;
       border-radius: 8px;
+      padding: 0.75rem 1.5rem;
       color: white;
-      font-size: 16px;
-      padding: 10px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      width: 100%;
     }
+
+    .btn-delete:hover {
+      background: linear-gradient(135deg, #c82333, #bd2130);
+      color: white;
+    }
+
     .btn-return {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: mediumpurple;
-      margin-top: 15px;
-      transition: all 0.3s;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      color: var(--primary-dark);
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      display: inline-block;
+      text-align: center;
     }
+
     .btn-return:hover {
-      background: rgba(255, 255, 255, 0.2);
-      color: mediumpurple;
+      background: rgba(255,255,255,0.7);
+      color: var(--primary-dark);
+    }
+
+    .alert-warning {
+      background-color: rgba(255,193,7,0.2);
+      border-color: rgba(255,193,7,0.3);
+      color: #856404;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 1rem;
+      }
+
+      .profile-info strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
     }
   </style>
 </head>
 <body>
+<!-- Dashboard Content -->
+<div class="dashboard-container">
+  <div class="user-header">
+    <h1>Patient Profile</h1>
+    <p>Manage your personal information and settings</p>
+  </div>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Medical Cabinet</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}">Index</a></li>
-        <li class="nav-item"><a class="nav-link active" th:href="@{/profile}">Profile</a></li>
-        <li class="nav-item"><a class="nav-link" th:href="@{/appointments}">Appointments</a></li>
-      </ul>
+  <!-- Profile Card -->
+  <div class="profile-card" th:if="${user != null}">
+    <h2>Your Informations</h2>
+
+    <div class="profile-info">
+      <p><strong>Name:</strong> <span th:text="${user.fullName}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+      <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
+      <p><strong>Address:</strong> <span th:text="${user.address}"></span></p>
+      <p><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
+      <p><strong>Date of Birth:</strong> <span th:text="${#temporals.format(user.dob, 'dd-MM-yyyy')}"></span></p>
+    </div>
+
+    <a th:href="@{/profile/edit}" class="btn btn-edit">Edit Profile</a>
+
+    <!-- Delete Profile Form -->
+    <form th:action="@{/profile/delete}" method="post">
+      <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete your profile?');">
+        Delete Profile
+      </button>
+    </form>
+
+    <div class="text-center mt-3">
+      <a th:href="@{/dashboard}" class="btn btn-return">
+        Return to Dashboard
+      </a>
     </div>
   </div>
-</nav>
 
-<!-- Profile Card -->
-<div class="profile-card" th:if="${user != null}">
-  <h2>Patient Profile</h2>
-  <p><strong>Name:</strong> <span th:text="${user.fullName}"></span></p>
-  <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-  <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
-  <p><strong>Address:</strong> <span th:text="${user.address}"></span></p>
-  <p><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
-  <p><strong>Date of Birth:</strong> <span th:text="${#temporals.format(user.dob, 'dd-MM-yyyy')}"></span></p>
-
-  <a th:href="@{/profile/edit}" class="btn btn-primary btn-update">Edit Profile</a>
-
-  <!-- Delete Profile Form -->
-  <form th:action="@{/profile/delete}" method="post">
-    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-    <button type="submit" class="btn btn-delete mt-2" onclick="return confirm('Are you sure you want to delete your profile?');">
-      Delete Profile
-    </button>
-  </form>
-  <div class="text-center mt-3">
-    <a th:href="@{/dashboard}" class="btn btn-return">
-      <i class="bi bi-arrow-left"></i> Retourner à la page principale
-    </a>
+  <!-- Message if user is null -->
+  <div class="alert alert-warning text-center" th:if="${user == null}">
+    <p>No user profile found. Please log in.</p>
   </div>
 </div>
-
-<!-- Message si l'utilisateur est null -->
-<div class="alert alert-warning text-center" th:if="${user == null}">
-  <p>No user profile found. Please log in.</p>
-</div>
-
 </body>
 </html>

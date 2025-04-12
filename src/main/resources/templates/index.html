@@ -1,81 +1,407 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{base :: layout(~{::section})}">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index Page</title>
+    <title>MediCare | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
-        /* Reset default margin and padding */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Full-page background styling */
-        body, html {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Vérification si Thymeleaf fonctionne */
         body {
-            background: url('/images/backgd.png') no-repeat center center fixed;
-            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f9f9f9;
         }
 
-        /* Overlay to improve readability */
-        .overlay {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 50px;
-            border-radius: 15px;
-            color: white;
-            text-align: center;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        .hero-section {
+            background: #e0f7fa;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Styling for title */
-        .overlay h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            align-items: center;
+            gap: 40px;
         }
 
-        /* Styling for paragraph */
-        .overlay p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .hero-text {
+            flex: 1;
         }
 
-        /* Button styling */
+        .company-name {
+            font-size: 2rem; /* Made bigger */
+            color: #0288d1;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            color: #004d40;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #ff9800;
-            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
             text-decoration: none;
-            font-size: 1rem;
-            border-radius: 5px;
-            transition: 0.3s;
+            color: white;
+            font-weight: bold;
         }
 
-        .btn:hover {
-            background: #e68900;
+        .btn-primary {
+            background: #0288d1;
+        }
+
+        .btn-teal {
+            background: #00796b;
+        }
+
+        .hero-image .image-widget {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.3rem;
+            color: #006064;
+            margin: 40px 0 20px;
+        }
+
+        .features-section {
+            background-color: #e0f7fa;
+            padding: 30px 20px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .features-grid .card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #004d40;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .testimonial-author {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #00796b;
+        }
+
+        .highlight-sections {
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Section colors remain unchanged */
+        .highlight-sections.alternate-bg {
+            background-color: #def7e5;
+        }
+
+        .highlight-sections:not(.alternate-bg):not(.teal-bg) {
+            background-color: #ffffff;
+        }
+
+        .highlight-sections.teal-bg {
+            background-color: #e0f7fa;
+        }
+
+        .highlight-card {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1100px;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .highlight-image {
+            flex: 1;
+        }
+
+        .highlight-content {
+            flex: 1;
+        }
+
+        .highlight-title {
+            font-size: 2rem;
+            color: #000000; /* Changed to black */
+            margin-bottom: 1rem;
+        }
+
+        .highlight-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .image-widget {
+            width: 100%;
+            height: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-widget img {
+            width: auto;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        footer {
+            background: #0288d1; /* Solid color instead of gradient */
+            color: white;
+            padding: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start; /* Changed to align items at the top */
+        }
+
+        .footer-about {
+            flex: 2;
+            min-width: 300px;
+            padding-right: 2rem;
+        }
+
+        .footer-contact {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-map {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        footer h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        footer p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        footer iframe {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            border: none;
+        }
+
+        @media(max-width: 768px) {
+            .hero-content, .highlight-card {
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-about {
+                padding-right: 0;
+            }
         }
     </style>
 </head>
 
-<body>
+<body onload="AOS.init();">
 <section>
-    <div class="overlay">
-        <h1>Welcome to Our Website</h1>
+    <div class="hero-section" data-aos="fade-up">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="company-name">MediCare</div>
+                <h1 class="hero-title">Your Health, Our Priority</h1>
+                <p class="hero-subtitle">
+                    Connecting patients with top-rated doctors for seamless healthcare experiences.
+                    Book appointments, get consultations, and manage your health records - all in one place.
+                </p>
+                <div class="btn-container">
+                    <a th:href="@{/register}" class="btn btn-primary">Patient Registration</a>
+                    <a th:href="@{/doctor/register}" class="btn btn-teal">Doctor Application</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-widget">
+                    <img th:src="@{/home.jpg}" alt="Healthcare Professionals">
+                </div>
+            </div>
+        </div>
     </div>
-</section>
-</body>
 
+    <div class="features-section" data-aos="fade-up">
+        <h2 class="section-title">Why Choose MediCare?</h2>
+        <div class="features-grid">
+            <div class="card">Fast Appointment Booking</div>
+            <div class="card">Top-Rated Doctors</div>
+            <div class="card">Secure Online Consultations</div>
+            <div class="card">Health Records in One Place</div>
+        </div>
+    </div>
+
+    <div class="carousel teal-bg" data-aos="fade-up">
+        <div class="testimonial-widget">
+            <p class="testimonial-text" id="testimonial-text">"MediCare changed my healthcare experience completely."</p>
+            <p class="testimonial-author" id="testimonial-author">- Amira Ben Salah</p>
+        </div>
+    </div>
+
+    <div class="highlight-sections alternate-bg" data-aos="fade-right">
+        <div class="highlight-card">
+            <div class="highlight-image">
+                <div class="image-widget">
+                    <img th:src="@{/patient.png}" alt="Patient Care">
+                </div>
+            </div>
+            <div class="highlight-content">
+                <h2 class="highlight-title">For Patients</h2>
+                <p class="highlight-text">
+                    Take control of your healthcare journey with easy appointment booking, instant consultations, and access to your records 24/7.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-sections" data-aos="fade-left">
+        <div class="highlight-card">
+            <div class="highlight-content">
+                <h2 class="highlight-title">For Healthcare Providers</h2>
+                <p class="highlight-text">
+                    Join our network and reach more patients with flexible scheduling, online tools, and efficient patient management.
+                </p>
+            </div>
+            <div class="highlight-image">
+                <div class="image-widget">
+                    <img th:src="@{/doctors.png}" alt="Doctor Team">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-sections teal-bg" data-aos="zoom-in">
+        <div class="highlight-card">
+            <div class="highlight-image">
+                <div class="image-widget">
+                    <img th:src="@{/healthcare.png}" alt="Healthcare Technology">
+                </div>
+            </div>
+            <div class="highlight-content">
+                <h2 class="highlight-title">Innovative Healthcare Solutions</h2>
+                <p class="highlight-text">
+                    We're revolutionizing healthcare delivery using the latest technology to bring care to everyone.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-about">
+            <h3>About MediCare</h3>
+            <p>MediCare is revolutionizing the healthcare industry by providing a seamless digital platform that connects patients with top medical professionals. Our mission is to make quality healthcare accessible to everyone through innovative technology solutions.</p>
+            <p>With features like online consultations, electronic health records, and instant appointment booking, we're transforming the way people experience medical care.</p>
+        </div>
+        <div class="footer-contact">
+            <h3>Contact Info</h3>
+            <ul>
+                <li>Tunis: (+216) 71 001 001</li>
+                <li>Sfax: (+216) 74 002 002</li>
+                <li>Sousse: (+216) 73 003 003</li>
+                <li>Gabès: (+216) 75 004 004</li>
+                <li>Bizerte: (+216) 72 005 005</li>
+            </ul>
+        </div>
+        <div class="footer-map">
+            <iframe src="https://maps.google.com/maps?q=Tunis&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
+        </div>
+    </footer>
+</section>
+
+<!-- AOS + Carousel Script -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({ once: true, duration: 1000 });
+
+    const testimonials = [
+        { text: "MediCare changed my healthcare experience completely.", author: "Amira Ben Salah" },
+        { text: "Quick and professional service. Highly recommend!", author: "Oussama Trabelsi" },
+        { text: "I finally found a doctor that listens to me. Thanks, MediCare!", author: "Nour Bouzid" },
+        { text: "Booking was a breeze and consultations were smooth.", author: "Rami Gharbi" }
+    ];
+
+    let index = 0;
+    setInterval(() => {
+        index = (index + 1) % testimonials.length;
+        document.getElementById("testimonial-text").innerText = `"${testimonials[index].text}"`;
+        document.getElementById("testimonial-author").innerText = `- ${testimonials[index].author}`;
+    }, 4000);
+</script>
+</body>
 </html>

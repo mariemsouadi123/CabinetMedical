@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
-        userRepo.save(user); // Save or update the user
+        userRepo.save(user);
     }
     @Override
     public List<User> getAllUsers() {
@@ -64,11 +64,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        // First get the user with all relationships loaded
+
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // This will cascade delete all appointments and consultations
         userRepo.delete(user);
     }
 }

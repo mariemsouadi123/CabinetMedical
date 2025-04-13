@@ -93,12 +93,11 @@ public class HomeController {
         // Check if the user is the admin
         if (ADMIN_EMAIL.equals(email)) {
             if (ADMIN_PASSWORD.equals(password)) {
-                // Create a dummy admin user (no role field needed)
                 User adminUser = new User();
                 adminUser.setFullName("Admin");
                 adminUser.setEmail(ADMIN_EMAIL);
                 session.setAttribute("loggedInUser", adminUser);
-                return "redirect:/admin/dashboard"; // Redirect to Admin Dashboard
+                return "redirect:/admin/dashboard";
             } else {
                 session.setAttribute("msg", "Invalid email or password.");
                 return "redirect:/login";
@@ -111,10 +110,9 @@ public class HomeController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            // Simple password check (⚠️ Replace with hashing in production)
             if (user.getPassword().equals(password)) {
                 session.setAttribute("loggedInUser", user);
-                return "redirect:/dashboard"; // Redirect to regular user dashboard
+                return "redirect:/dashboard";
             }
         }
 
@@ -127,7 +125,7 @@ public class HomeController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
         if (loggedInUser == null) {
-            return "redirect:/login"; // Redirect if the user is not logged in
+            return "redirect:/login";
         }
 
         List<Appointment> appointments = appointmentRepository.findByUser(loggedInUser);
@@ -142,13 +140,12 @@ public class HomeController {
     public String showAdminDashboard(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
 
-        // Check if the user is logged in and is the admin
         if (loggedInUser == null || !ADMIN_EMAIL.equals(loggedInUser.getEmail())) {
-            return "redirect:/login"; // Redirect to login if not the admin
+            return "redirect:/login"; // redirect to login if not the admin
         }
 
         List<Doctor> doctors = doctorRepository.findAll();
-        List<Appointment> allAppointments = appointmentRepository.findAll(); // Fetch all appointments
+        List<Appointment> allAppointments = appointmentRepository.findAll();
         model.addAttribute("appointments", allAppointments);
         model.addAttribute("doctors", doctors);
         model.addAttribute("admin", loggedInUser);
@@ -157,7 +154,7 @@ public class HomeController {
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalidate the session
-        return "redirect:/login"; // Redirect to the login page
+        session.invalidate();
+        return "redirect:/login";
     }
 }

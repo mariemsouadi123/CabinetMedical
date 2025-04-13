@@ -82,11 +82,11 @@ public class AppointmentController {
 
         Optional<Appointment> appointmentOpt = appointmentRepository.findById(id);
         if (appointmentOpt.get().getUser().getId() != loggedInUser.getId()) {
-            return "redirect:/dashboard"; // Ensure only the logged-in user can update their own appointments
+            return "redirect:/dashboard";
         }
 
         model.addAttribute("appointment", appointmentOpt.get());
-        return "update-appointment"; // Thymeleaf template for updating
+        return "update-appointment";
     }
 
     @PostMapping("/update/{id}")

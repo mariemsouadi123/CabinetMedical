@@ -28,13 +28,12 @@ public class PatientController {
     @GetMapping
     public String showProfile(Model model, @SessionAttribute(value = "loggedInUser", required = false) User loggedInUser) {
         if (loggedInUser == null) {
-            return "redirect:/login"; // Redirect if not logged in
+            return "redirect:/login";
         }
         model.addAttribute("user", loggedInUser);
         return "profile";
     }
 
-    // ✅ Display edit profile page
     @GetMapping("/edit")
     public String editProfile(Model model, @SessionAttribute(value = "loggedInUser", required = false) User loggedInUser) {
         if (loggedInUser == null) {
@@ -44,7 +43,6 @@ public class PatientController {
         return "edit-profile";
     }
 
-    // ✅ Update profile
     @PostMapping("/update")
     public String updateProfile(@Valid @ModelAttribute("user") User updatedUser,
                                 BindingResult result,
@@ -57,7 +55,7 @@ public class PatientController {
 
         if (result.hasErrors()) {
             logger.info("Validation errors: {}", result.getAllErrors());
-            return "edit-profile"; // Retour à la page d'édition si erreurs
+            return "edit-profile";
         }
 
         logger.info("Updating profile for user: {}", loggedInUser.getEmail());
@@ -74,15 +72,13 @@ public class PatientController {
             user.setAddress(updatedUser.getAddress());
             user.setGender(updatedUser.getGender());
 
-            // Garde l'ancien mot de passe si l'utilisateur n'en fournit pas un nouveau
+
             if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
                 user.setPassword(updatedUser.getPassword());
             }
 
-            // Sauvegarde de l'utilisateur
-            userService.save(user); // Assure-toi que cette méthode existe dans UserService
+            userService.save(user);
 
-            // Mise à jour de la session
             session.setAttribute("loggedInUser", user);
             logger.info("Session updated successfully.");
         } else {
@@ -93,7 +89,6 @@ public class PatientController {
         return "redirect:/profile";
     }
 
-    // ✅ Delete profile
     @PostMapping("/delete")
     public String deleteProfile(HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -105,7 +100,7 @@ public class PatientController {
         logger.info("Deleting profile for user: {}", loggedInUser.getEmail());
 
         userService.deleteByEmail(loggedInUser.getEmail());
-        session.invalidate(); // Invalidate the session
+        session.invalidate();
 
         return "redirect:/login";
     }

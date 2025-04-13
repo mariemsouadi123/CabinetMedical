@@ -10,7 +10,7 @@ public interface UserService {
     Boolean checkEmail(String email);
     Optional<User> findByEmail(String email);
     void deleteByEmail(String email);
-    void updateUser(User user); // Ajoute cette méthode
+    void updateUser(User user);
     Optional<User> findById(Long id);
     
 

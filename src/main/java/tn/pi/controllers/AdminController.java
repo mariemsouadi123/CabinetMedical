@@ -60,7 +60,6 @@ public class AdminController {
         try {
             userService.deleteById(id);
         } catch (Exception e) {
-            // Log the error and redirect with error message
             return "redirect:/admin/users?error=deleteFailed";
         }
 
@@ -117,7 +116,7 @@ public class AdminController {
     // ==================== LOGOUT ====================
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // Invalidate the session
-        return "redirect:/login"; // Redirect to the login page
+        session.invalidate();
+        return "redirect:/login";
     }
 }

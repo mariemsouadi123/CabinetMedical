@@ -25,9 +25,8 @@ public class Doctor {
     private String password;
 
     @NotBlank(message = "Specialization is required")
-    private String specialization; // Nouveau champ ajouté
+    private String specialization;
 
-    // Constructeurs
     public Doctor() {
     }
 

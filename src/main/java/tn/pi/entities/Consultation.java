@@ -23,7 +23,7 @@ public class Consultation {
     private String prescription;
 
     @Column(name = "payment_status")
-    private String paymentStatus = "UNPAID"; // Valeurs possibles: UNPAID, PENDING, PAID
+    private String paymentStatus = "UNPAID";
 
     @Column(name = "payment_date")
     private LocalDateTime paymentDate;

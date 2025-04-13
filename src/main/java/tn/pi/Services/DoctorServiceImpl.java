@@ -19,7 +19,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @Transactional
     public Doctor createDoctor(Doctor doctor) {
-        doctor.setPassword(doctor.getPassword()); // ⚠️ Hacher le mot de passe en prod
+        doctor.setPassword(doctor.getPassword());
         doctorRepository.save(doctor);
         return doctor;
     }

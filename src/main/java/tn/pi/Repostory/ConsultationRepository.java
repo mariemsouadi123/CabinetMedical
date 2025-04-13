@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ConsultationRepository extends JpaRepository<Consultation, Long> {
     Optional<Consultation> findByAppointmentId(Long appointmentId);
     List<Consultation> findByUserId(Long userId);
-    List<Consultation> findByDoctorId(Long doctorId); // Trouver les consultations d'un médecin
+    List<Consultation> findByDoctorId(Long doctorId);
 }

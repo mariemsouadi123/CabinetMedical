@@ -27,10 +27,8 @@ public class Appointment {
     private String status;
     private Double price;
 
-    // ✅ Required No-Arg Constructor (Needed for JPA)
     public Appointment() {}
 
-    // ✅ Parameterized Constructor (Match your Controller)
     public Appointment(Doctor doctor, User user, LocalDate date, LocalTime time, String status, Double price) {
         this.doctor = doctor;
         this.user = user;
@@ -40,7 +38,6 @@ public class Appointment {
         this.price = price;
     }
 
-    // ✅ Getters and Setters
     public Long getId() {
         return id;
     }

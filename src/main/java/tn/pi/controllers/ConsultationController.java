@@ -32,7 +32,6 @@ public class ConsultationController {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    // ✅ Dashboard Médecin
     @GetMapping("/doctor-dashboard")
     public String showDoctorDashboard(Model model, HttpSession session) {
         Doctor doctor = (Doctor) session.getAttribute("loggedInDoctor");
@@ -46,7 +45,6 @@ public class ConsultationController {
         return "doctor-dashboard";
     }
 
-    // ✅ Formulaire d'ajout Consultation
     @GetMapping("/add/{appointmentId}")
     public String showAddConsultationForm(@PathVariable Long appointmentId, Model model, HttpSession session) {
         Doctor doctor = (Doctor) session.getAttribute("loggedInDoctor");
@@ -66,14 +64,12 @@ public class ConsultationController {
         consultation.setDoctor(doctor);
         consultation.setUser(appointment.getUser());
 
-        // Pass the user's full name to the model
         model.addAttribute("consultation", consultation);
         model.addAttribute("userFullName", appointment.getUser().getFullName());
 
         return "add-consultation";
     }
 
-    // ✅ Sauvegarde Consultation
     @PostMapping("/save")
     public String saveConsultation(@ModelAttribute("consultation") Consultation consultation, HttpSession session) {
         Doctor doctor = (Doctor) session.getAttribute("loggedInDoctor");
@@ -86,7 +82,6 @@ public class ConsultationController {
             return "redirect:/doctor/dashboard";
         }
 
-        // Fetch the appointment from database to ensure it's managed
         Optional<Appointment> appointmentOpt = appointmentRepository.findById(consultation.getAppointment().getId());
 
         if (appointmentOpt.isEmpty()) {
@@ -100,23 +95,19 @@ public class ConsultationController {
             return "redirect:/doctor/dashboard";
         }
 
-        // Update the appointment status to "Completed" or similar
         appointment.setStatus("Completed");
-        appointmentRepository.save(appointment); // Ensure appointment is saved first
+        appointmentRepository.save(appointment);
 
-        // Set all required fields on the consultation
         consultation.setAppointment(appointment);
         consultation.setDoctor(doctor);
         consultation.setUser(appointment.getUser());
         consultation.setConsultationDate(LocalDateTime.now());
 
-        // Save the consultation
         consultationRepository.save(consultation);
 
         return "redirect:/doctor/dashboard";
     }
 
-    // ✅ Consultation Vue pour un Patient
     @GetMapping("/view/{appointmentId}")
     public String viewConsultation(@PathVariable Long appointmentId, Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -136,7 +127,6 @@ public class ConsultationController {
         return "view-consultation";
     }
 
-    // Afficher le formulaire de paiement
     @GetMapping("/payment/{consultationId}")
     public String showPaymentForm(@PathVariable Long consultationId, Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -151,7 +141,6 @@ public class ConsultationController {
         return "payment-form";
     }
 
-    // Traiter le paiement
     @PostMapping("/process-payment")
     public String processPayment(
             @RequestParam Long consultationId,

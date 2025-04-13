@@ -98,7 +98,6 @@ public class DoctorController {
             return "redirect:/doctor/login";
         }
 
-        // Fetch appointments for the logged-in doctor
         List<Appointment> appointments = appointmentRepository.findByDoctor(loggedInDoctor);
         model.addAttribute("appointments", appointments);
         model.addAttribute("doctor", loggedInDoctor);
@@ -148,7 +147,6 @@ public class DoctorController {
             return "doctor-edit-profile";
         }
 
-        // Update the doctor's information
         loggedInDoctor.setUsername(updatedDoctor.getUsername());
         loggedInDoctor.setEmail(updatedDoctor.getEmail());
         loggedInDoctor.setSpecialization(updatedDoctor.getSpecialization());

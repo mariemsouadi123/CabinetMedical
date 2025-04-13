@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments;
 
-    // ✅ Constructor
+
     public User() {}
 
     public User(String fullName, String email, String password, Integer age, String phone) {
@@ -58,8 +58,6 @@ public class User {
         this.phone = phone;
         this.dob = LocalDate.now();
     }
-
-    // ✅ Getters and Setters
 
     public Long getId() {
         return id;
